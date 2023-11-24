@@ -1,7 +1,13 @@
 import React from 'react'
 
-export const Options = () => {
+interface Props {
+  children: React.ReactNode;
+}
+
+export const Options = ({children}: Props) => {
   return (
-    <div>Options</div>
+    <div>Options
+      {children}
+    </div>
   )
 }

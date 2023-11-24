@@ -1,18 +1,22 @@
 import "./App.css";
-import { Typography, AppBar } from "@material-ui/core";
+import { Typography, AppBar, makeStyles } from "@material-ui/core";
 import { VideoPlayer } from "./components/VideoPlayer";
 import Notifications from "./components/Notifications";
 import { Options } from "./components/Options";
+import { useEffect } from "react";
+import { LobbyScreen } from "./screens/LobbyScreen";
+import { Room } from "./screens/Room";
+
+import { Routes, Route } from "react-router-dom";
+
 
 function App() {
   return (
     <>
-      <AppBar position="static" color="inherit">
-        <Typography variant="h2">Video Chat</Typography>
-      </AppBar>
-      <VideoPlayer />
-      <Notifications />
-      <Options />
+      <Routes>
+        <Route path="/" element={<LobbyScreen />} />
+        <Route path="/room/:roomId" element={<Room />} />
+      </Routes>
     </>
   );
 }
