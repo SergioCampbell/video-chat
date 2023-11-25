@@ -1,12 +1,46 @@
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  padding: 0;
+}
+
+/* Global styles for the body */
+body {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://cdn.pixabay.com/photo/2023/11/13/10/32/fields-8385045_1280.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
   color: white;
+  font-family: 'HeeboBold';
+}
+
+
+/* Global container for the app content */
+.app-container {
+  display: inline-block;
+  max-width: 1200px;
+  /* Set a maximum width for the content */
+  margin: 0 auto;
+  /* Center the content horizontally */
+  padding: 20px;
+  /* Add some padding to the content */
+}
+
+/* Media Query for Tablets and Smaller Screens */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 10px;
+    /* Adjust padding for smaller screens */
+  }
+
+  /* Add more responsive styles as needed */
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 480px) {
+  .app-container {
+    padding: 5px;
+    /* Adjust padding for smaller screens */
+  }
+
 }

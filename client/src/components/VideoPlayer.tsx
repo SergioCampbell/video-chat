@@ -1,23 +1,33 @@
-import React, { useContext } from "react";
 import { Grid, Typography, Paper } from "@material-ui/core";
-import VideoContext from "../Context/VideoContext";
-import ContextProvider from "../Context/SocketContext";
-// import { makeStyles } from '@material-ui/core/styles'
+import { FC } from "react";
+import ReactPlayer from "react-player";
 
-// import { SocketContext } from '../SocketContext'
+interface VideoPlayerProps {
+  myVideo: MediaStream | null;
+  remoteVideo: MediaStream | null;
+}
 
-export const VideoPlayer = () => {
-  const { name, callAccepted, myVideo, userVideo, callEnded, stream, call } =
-    useContext(VideoContext);
+export const VideoPlayer: FC<VideoPlayerProps> = ({ myVideo, remoteVideo }) => {
   return (
-    <Grid>
+    <Grid
+      container
+      justifyContent="center"
+      style={{ display: "flex", flexDirection: "row",  }}
+    >
       {/* Our own Video */}
       <Paper>
         <Grid item xs={12} md={6}>
           <Typography variant="h5" gutterBottom>
             Name
           </Typography>
-          <video playsInline muted ref={null} autoPlay />
+          {/* <video playsInline muted ref={null} autoPlay /> */}
+          <ReactPlayer
+            playing
+            muted
+            url={myVideo !== null ? myVideo : []}
+            height="300px"
+            width="300px"
+          />
         </Grid>
       </Paper>
       {/* Other user Video */}
@@ -26,7 +36,14 @@ export const VideoPlayer = () => {
           <Typography variant="h5" gutterBottom>
             Name
           </Typography>
-          <video playsInline muted ref={null} autoPlay />
+          {/* <video playsInline muted ref={null} autoPlay /> */}
+          <ReactPlayer
+            playing
+            muted
+            url={remoteVideo !== null ? remoteVideo : []}
+            height="300px"
+            width="300px"
+          />
         </Grid>
       </Paper>
     </Grid>

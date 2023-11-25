@@ -9,7 +9,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <SocketProvider>
+        <div className="app-container">
         <App />
+        </div>
       </SocketProvider>
     </BrowserRouter>
   </React.StrictMode>

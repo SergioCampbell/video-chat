@@ -1,33 +1,15 @@
-const app = require("express")();
-const server = require("http").createServer(app);
-const cors = require("cors");
-const io = require("socket.io")(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
+const { Server } = require("socket.io");
 
-app.use(cors());
-
-const PORT = process.env.PORT || 5000;
-
-app.get("/", (req, res) => {
-  res.send("Server is running");
-});
-
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const io = new Server(5000, {
+  cors: true,
 });
 
 const usernameToSocketIdMap = new Map();
 const socketIdToUsernameMap = new Map();
 
 io.on("connection", (socket) => {
-  socket.emit("me", socket.id);
-
+  console.log(`Socket Connected : ${socket.id}`);
   socket.on("room:join", (data) => {
-    console.log(`Socket Connected : ${socket.id}`);
     const { username, room } = data;
     // mapping the username to socket id
     usernameToSocketIdMap.set(username, socket.id);
@@ -38,15 +20,21 @@ io.on("connection", (socket) => {
     io.to(socket.id).emit("room:join", data);
   });
 
-  socket.on("disconnect", () => {
-    socket.broadcast.emit("callEnded");
+  socket.on("user:call", ({ to, offer }) => {
+    io.to(to).emit("incomming:call", { from: socket.id, offer });
   });
 
-  socket.on("callUser", ({ userToCall, signalData, from, name }) => {
-    io.to(userToCall).emit("callUser", { signal: signalData, from, name });
+  socket.on("call:accepted", ({ to, answer }) => {
+    io.to(to).emit("call:accepted", { from: socket.id, answer });
   });
 
-  socket.on("answerCall", (data) => {
-    io.to(data.to).emit("callAccepted", data.signal);
+  socket.on("peer:negociation:needed", ({ to, offer }) => {
+    console.log("negociation needed", offer);
+    io.to(to).emit("peer:negociation:needed", { from: socket.id, offer });
+  });
+
+  socket.on("peer:negociation:accepted", ({ to, answer }) => {
+    console.log("negociation accepted", answer);
+    io.to(to).emit("peer:negociation:accepted", { from: socket.id, answer });
   });
 });
